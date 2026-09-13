@@ -1,0 +1,42 @@
+GOLDEN GHOST — HATUA ZA MWISHO
+
+1. EXTRACT
+Extract ZIP hii kwenye folder unalotaka.
+
+2. INSTALL/START (Windows)
+Double-click START-WINDOWS.bat
+
+3. IF .env IS ALREADY THERE
+Usiifute. Ili kutengeneza User mpya, double-click CREATE-USER-WINDOWS.bat.
+
+4. OPEN PLATFORM
+http://localhost:3000/
+
+5. USER
+LOGIN -> ingia kwa username/password ya User uliyo-create.
+GET STARTED -> unaweza pia kutengeneza account mpya.
+
+6. ADMIN
+http://localhost:3000/admin-login.html
+Tumia Admin credentials ulizoweka wakati wa first setup.
+
+7. FINAL CHECK
+NPM command: npm run verify
+
+8. INSTALL AS APP
+Baada ya deployment kwenye domain yenye HTTPS, fungua domain kwenye Chrome/Edge na tumia Install App / Add to desktop.
+
+9. ONLINE DEPLOYMENT
+Hatua ya mwisho ya biashara ni ku-deploy Node.js app kwenye server, kuweka domain + HTTPS, persistent session storage, backups, na official payment-provider credentials.
+
+10. PAYMENTS
+Payment provider inabaki UNCONFIGURED mpaka merchant credentials/API contract rasmi itolewe. Usitumie fake credentials.
+
+Hii package ndiyo baseline ya mwisho ya code. Baada ya hapo kazi ni deployment, provider onboarding, testing ya production, na operational setup — si kuandika upya platform.
+
+
+## V20 Final Fix — Email iliyotumika
+Ikiwa email tayari ipo kwenye database lakini login inakataa, **usifute database na usibadilishe email**.
+Windows: double-click `REPAIR-USER-WINDOWS.bat`. Itakurekebishia account iliyopo, itaweka password mpya, na kuhifadhi wallet/transaction history.
+
+Flow ya mwisho: `REPAIR-USER-WINDOWS.bat` → `npm start` → `http://localhost:3000/login.html` → User Dashboard.

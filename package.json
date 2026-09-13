@@ -1,0 +1,26 @@
+{
+  "name": "golden-ghost-unified-platform",
+  "version": "36.0.0",
+  "private": true,
+  "description": "Golden Ghost unified cross-device Progressive Web App \u2014 production-hardened starter",
+  "scripts": {
+    "setup": "node setup.js",
+    "create-user": "node create-user.js",
+    "start": "node server.js",
+    "verify": "node --check server.js && node --check db.js && node --check payment-provider.js && node --check setup.js && node --check create-user.js && node --check repair-user.js && node qa-smoke.js",
+    "qa": "node qa-smoke.js",
+    "repair-user": "node repair-user.js",
+    "integration-test": "node integration-test.js",
+    "verify-layout": "node verify-layout.js",
+    "prestart": "node deploy-preflight.js && node verify-layout.js",
+    "preflight": "node deploy-preflight.js && node verify-layout.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0",
+    "sql.js": "^1.13.0"
+  }
+}
