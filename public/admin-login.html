@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Ghost | Admin Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b0f19;
+            color: white;
+        }
+
+        .login-box {
+            width: 380px;
+            max-width: 90%;
+            padding: 35px;
+            background: #151b29;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #9ca3af;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #d1d5db;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            background: #0f1420;
+            color: white;
+            outline: none;
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-top: 15px;
+            min-height: 20px;
+            font-size: 14px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+    </style>
+
+<style>
+body{background:#050505 url('ghost-wide.png') center/cover fixed no-repeat!important;position:relative}body::before{content:"";position:fixed;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.84),rgba(0,0,0,.55),rgba(0,0,0,.84));pointer-events:none}.login-box{position:relative;z-index:1;backdrop-filter:blur(10px);background:rgba(9,9,9,.88)!important}.login-box::after{content:"";display:block;height:90px;margin-top:22px;border-radius:16px;background:url('ghost-cinematic.png') center/cover;opacity:.5;border:1px solid #4a3900}
+</style>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#d4af37">
+
+<script src="/gg-i18n.js" defer></script>
+<script src="/pwa-install.js" defer></script>
+</head>
+
+<body>
+
+    <div class="login-box">
+
+        <!-- Logo -->
+        <img src="golden-ghost-logo.png" class="logo" alt="Logo">
+
+        <h1>Admin Login</h1>
+        <p class="subtitle">Ingia kwenye mfumo wa Admin</p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Ingiza username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Ingiza password"
+                    required
+                >
+            </div>
+
+            <button type="submit">LOGIN</button>
+
+            <div id="message"></div>
+
+        </form>
+
+        <a href="index.html" class="back">← Rudi Home</a>
+
+    </div>
+
+    <script>
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+        const button = form.querySelector("button[type=submit]");
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            message.textContent = "Inathibitisha...";
+            message.style.color = "#f59e0b";
+            button.disabled = true;
+
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Username au password sio sahihi.");
+                }
+
+                message.style.color = "#22c55e";
+                message.textContent = "Login imefanikiwa!";
+
+                setTimeout(() => {
+                    window.location.href = "/dashboard.html";
+                }, 500);
+            } catch (error) {
+                message.style.color = "#ef4444";
+                message.textContent = error.message;
+                button.disabled = false;
+            }
+        });
+    </script>
+
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(() => {})); }
+</script>
+</body>
+</html>

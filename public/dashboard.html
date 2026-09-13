@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Ghost - Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Sidebar ya Kushoto */
+        .sidebar {
+            width: 260px;
+            background: #0f172a;
+            border-right: 1px solid #1e293b;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 15px;
+            flex-shrink: 0;
+        }
+        .sidebar-top .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .brand-logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #38bdf8;
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+        }
+        .brand-box h2 {
+            font-size: 14px;
+            color: #38bdf8;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .brand-box p {
+            font-size: 9.5px;
+            color: #94a3b8;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .nav-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav-menu li.active a, .nav-menu li a:hover {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        .sidebar-bottom-logo {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #1e293b;
+        }
+        .big-ghost-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 8px auto;
+            display: block;
+            border: 2px solid #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+        .sidebar-bottom-logo p {
+            font-size: 10px;
+            color: #94a3b8;
+        }
+
+        /* Eneo Kuu la Kulia */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: #060913;
+        }
+        /* Topbar */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: #0f172a;
+            border-bottom: 1px solid #1e293b;
+        }
+        .search-area input {
+            background: #020617;
+            border: 1px solid #1e293b;
+            padding: 10px 18px;
+            border-radius: 25px;
+            color: #fff;
+            width: 380px;
+            outline: none;
+            font-size: 13px;
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .notif-btn {
+            background: #020617;
+            border: 1px solid #1e293b;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #38bdf8;
+        }
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        .user-avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #10b981;
+        }
+
+        /* Dashboard Content Layout */
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: 1fr 310px;
+            gap: 20px;
+            padding: 25px 30px;
+        }
+        .left-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* HERO BANNER YENYE PICHA YA MLIMA */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url('mountain.png');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 18px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
+        }
+        .hero-banner h1 {
+            color: #fbbf24;
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+        .hero-banner p {
+            color: #e2e8f0;
+            font-size: 12.5px;
+            margin-bottom: 22px;
+            line-height: 1.5;
+            max-width: 600px;
+        }
+        .hero-pills {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .hero-pill {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fcd34d;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* 4 STATS CARDS */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 20px 16px;
+            border: 1px solid #1e293b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+        .stat-card.blue { border-top: 3px solid #3b82f6; }
+        .stat-card.green { border-top: 3px solid #10b981; }
+        .stat-card.purple { border-top: 3px solid #a855f7; }
+        .stat-card.orange { border-top: 3px solid #f59e0b; }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .stat-title {
+            font-size: 12px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .stat-icon {
+            font-size: 18px;
+        }
+        .stat-num {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        .stat-footer {
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* VIPENGELE VYA HARAKA */
+        .section-box-title {
+            font-size: 15px;
+            color: #f8fafc;
+            margin-bottom: 4px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-box-desc {
+            font-size: 11.5px;
+            color: #94a3b8;
+            margin-bottom: 14px;
+        }
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .quick-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .quick-card:hover {
+            border-color: #f59e0b;
+            transform: translateY(-3px);
+            background: #111827;
+        }
+        .quick-card-icon {
+            font-size: 26px;
+            margin-bottom: 10px;
+            background: rgba(245, 158, 11, 0.1);
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .quick-card h5 {
+            font-size: 13px;
+            color: #fcd34d;
+            margin-bottom: 6px;
+        }
+        .quick-card p {
+            font-size: 10.5px;
+            color: #94a3b8;
+            margin-bottom: 14px;
+            line-height: 1.3;
+        }
+        .btn-mini-gold {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #0b0f19;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* WIDE BOTTOM BANNER */
+        .wide-banner {
+            background: linear-gradient(135deg, #1a1202 0%, #452a04 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 16px;
+            padding: 18px 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.15);
+        }
+        .wide-banner-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .wide-banner h4 {
+            font-size: 13.5px;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .wide-banner p {
+            font-size: 11px;
+            color: #fde68a;
+        }
+        .btn-gold-gradient {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border: none;
+            color: #0b0f19;
+            padding: 9px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+        .btn-gold-gradient:hover {
+            opacity: 0.9;
+        }
+
+        /* Right Column */
+        .right-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card-box {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+        }
+        .profile-mini {
+            text-align: center;
+        }
+        .profile-avatar-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 10px auto;
+            display: block;
+            border: 3px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        }
+        .profile-mini h3 {
+            color: #38bdf8;
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+        .profile-mini p {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .status-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 3px 12px;
+            border-radius: 15px;
+            font-size: 10.5px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: #94a3b8;
+            padding: 8px 0;
+            border-bottom: 1px solid #1e293b;
+        }
+        .meta-row span:last-child {
+            color: #fff;
+            font-weight: 600;
+        }
+        .btn-outline-custom {
+            background: transparent;
+            border: 1.5px solid #f59e0b;
+            color: #f59e0b;
+            width: 100%;
+            padding: 9px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+        .btn-outline-custom:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        /* Shughuli za Hivi Karibuni */
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .activity-header h4 {
+            font-size: 13px;
+            color: #38bdf8;
+            font-weight: 700;
+        }
+        .activity-item {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            padding: 15px 0;
+            background: #020617;
+            border-radius: 10px;
+            border: 1px dashed #1e293b;
+        }
+
+        /* Footer */
+        .footer-copy {
+            padding: 15px 30px;
+            font-size: 11px;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #0f172a;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+        }
+    </style>
+
+<style>
+.quick-actions,.stats,.activity-section{position:relative;overflow:hidden}.quick-actions::after,.stats::after,.activity-section::after{content:"";position:absolute;right:-20px;bottom:-50px;width:210px;height:150px;background:url('ghost-cinematic.png') center/cover;border-radius:28px;opacity:.08;pointer-events:none}.hero-banner{box-shadow:0 18px 55px rgba(0,0,0,.4)}
+</style>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#d4af37">
+
+<script src="/gg-i18n.js" defer></script>
+<script src="/pwa-install.js" defer></script>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-top">
+            <div class="brand-box">
+                <img src="logo.png" alt="Logo" class="brand-logo-img">
+                <div>
+                    <h2>GOLDEN GHOST</h2>
+                    <p>One Community. One World. 🌍</p>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li class="active"><a href="#">📁 Dashboard</a></li>
+                <li><a href="#">👤 Profile</a></li>
+                <li><a href="/users.html">👥 Users</a></li><li><a href="/admin-communities.html">🌍 Communities</a></li>
+                <li><a href="#">✉️ Messages</a></li>
+                <li><a href="#">📊 Statistics</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+                <li><a href="#">❓ Help</a></li>
+                <li><a href="#" onclick="adminLogout(); return false;">🚪 Logout</a></li>
+            </ul>
+        </div>
+        <div class="sidebar-bottom-logo">
+            <img src="logo.png" alt="Ghost Logo" class="big-ghost-img">
+            <p>One Community. One World. 🌍</p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="search-area">
+                <input type="text" placeholder="🔍 Tafuta kitu kwenye mfumo...">
+            </div>
+            <div class="topbar-right">
+                <div class="notif-btn">🔔</div>
+                <div class="user-pill">
+                    <img src="logo.png" alt="Admin" class="user-avatar-img">
+                    <div>
+                        <div style="font-size: 13px; font-weight: 700; color: #f8fafc;">Alpha Admin</div>
+                        <div style="font-size: 10px; color: #38bdf8;">Administrator</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD CONTENT AREA -->
+        <div class="dashboard-content">
+            
+            <!-- LEFT COLUMN -->
+            <div class="left-col">
+                
+                <!-- HERO BANNER (MOUNTAIN BACKGROUND) -->
+                <div class="hero-banner">
+                    <h1>Karibu tena, Alpha Admin 👑</h1>
+                    <p>Umefanikiwa kuingia kwenye Dashibodi ya Golden Ghost. Hapa ndipo unadhibiti shughuli zote za mfumo.</p>
+                    <div class="hero-pills">
+                        <div class="hero-pill">🟡 Mfumo Bado Haujawashwa</div>
+                        <div class="hero-pill">📅 Leo: 11 Sep, 2026</div>
+                        <div class="hero-pill">🇹🇿 Tanzania 🌍</div>
+                    </div>
+                </div>
+
+                <!-- 4 STATS CARDS -->
+                <div class="stats-row">
+                    <div class="stat-card blue">
+                        <div class="stat-header">
+                            <span class="stat-title">Jumla ya Watumiaji</span>
+                            <span class="stat-icon">👥</span>
+                        </div>
+                        <div class="stat-num" id="stat-users">—</div>
+                        <div class="stat-footer" style="color: #3b82f6;">↗ Onyesha zaidi</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-header">
+                            <span class="stat-title">Watembeleaji</span>
+                            <span class="stat-icon">👁️</span>
+                        </div>
+                        <div class="stat-num" id="stat-transactions">—</div>
+                        <div class="stat-footer" style="color: #10b981;">↗ Onyesha zaidi</div>
+                    </div>
+                    <div class="stat-card purple">
+                        <div class="stat-header">
+                            <span class="stat-title">Ujumbe</span>
+                            <span class="stat-icon">✉️</span>
+                        </div>
+                        <div class="stat-num" id="stat-pending">—</div>
+                        <div class="stat-footer" style="color: #a855f7;">↗ Onyesha zaidi</div>
+                    </div>
+                    <div class="stat-card orange">
+                        <div class="stat-header">
+                            <span class="stat-title">Mapato</span>
+                            <span class="stat-icon">📊</span>
+                        </div>
+                        <div class="stat-num" id="stat-volume">—</div>
+                        <div class="stat-footer" style="color: #f59e0b;">↗ Onyesha zaidi</div>
+                    </div>
+                </div>
+
+                <!-- VIPENGELE VYA HARAKA -->
+                <div>
+                    <div class="section-box-title">⭐ Vipengele vya Haraka</div>
+                    <div class="section-box-desc">Dhibiti na fuatilia shughuli zako kwa urahisi.</div>
+                    
+                    <div class="quick-grid">
+                        <div class="quick-card">
+                            <div class="quick-card-icon">👥</div>
+                            <h5>Manage Users</h5>
+                            <p>Ongeza, badilisha au futa watumiaji.</p>
+                            <button class="btn-mini-gold" onclick="window.location.href='/users.html'">Endelea →</button>
+                        </div>
+                        <div class="quick-card">
+                            <div class="quick-card-icon">✉️</div>
+                            <h5>View Messages</h5>
+                            <p>Soma na jibu ujumbe kutoka kwa watumiaji.</p>
+                            <button class="btn-mini-gold">Endelea →</button>
+                        </div>
+                        <div class="quick-card">
+                            <div class="quick-card-icon">📊</div>
+                            <h5>Statistics</h5>
+                            <p>Angalia takwimu za muhimu za mfumo.</p>
+                            <button class="btn-mini-gold">Endelea →</button>
+                        </div>
+                        <div class="quick-card">
+                            <div class="quick-card-icon">⚙️</div>
+                            <h5>Settings</h5>
+                            <p>Badilisha mipangilio ya mfumo.</p>
+                            <button class="btn-mini-gold" onclick="window.location.href='/notifications.html'">Endelea →</button>
+                        </div>
+                        <div class="quick-card">
+                            <div class="quick-card-icon">🧪</div><h5>Final QA</h5><p>Kagua mfumo kabla ya uzinduzi.</p><button class="btn-mini-gold" onclick="window.location.href='/final-check.html'">Endelea →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WIDE BOTTOM BANNER -->
+                <div class="wide-banner">
+                    <div class="wide-banner-left">
+                        <span style="font-size: 26px;">👑</span>
+                        <div>
+                            <h4>Golden Ghost - One Community. One World.</h4>
+                            <p>Pamoja tunajenga mtandao mkubwa zaidi wa fursa, elimu na maendeleo.</p>
+                        </div>
+                    </div>
+                    <button class="btn-gold-gradient">Tazama Zaidi →</button>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="right-col">
+                
+                <!-- PROFILE MINI CARD -->
+                <div class="card-box profile-mini">
+                    <img src="logo.png" alt="Alpha Admin" class="profile-avatar-img">
+                    <h3>Alpha Admin 👑</h3>
+                    <p>System Administrator</p>
+                    <div class="status-badge">⏳ Subira ya Uzinduzi</div>
+                    
+                    <div class="meta-row">
+                        <span>📅 Joined</span>
+                        <span>11 Sep, 2026</span>
+                    </div>
+                    <div class="meta-row">
+                        <span>🛡️ Role</span>
+                        <span>Super Admin</span>
+                    </div>
+
+                    <button class="btn-outline-custom">👤 Hariri Wasifu</button>
+                </div>
+
+                <!-- SHUGHULI ZA HIVI KARIBUNI -->
+                <div class="card-box">
+                    <div class="activity-header">
+                        <h4>Shughuli za Hivi Karibuni</h4>
+                    </div>
+                    <div class="activity-item">
+                        Hakuna shughuli yoyote kwa sasa. Mfumo bado upo kwenye maandalizi ya mwisho kabla ya uzinduzi rasmi.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div style="margin:18px 0"><a href="/transactions.html" style="display:inline-block;padding:12px 18px;border-radius:10px;background:#d2a52e;color:#090909;text-decoration:none;font-weight:800">💳 Transactions Control</a></div>
+
+        <!-- FOOTER -->
+        <div class="footer-copy">
+            <div>&copy; 2026 Golden Ghost. Haki zote zimehifadhiwa.</div>
+            <div class="social-icons">
+                <span>🌐</span>
+                <span>✖️</span>
+                <span>📷</span>
+                <span>▶️</span>
+                <span>✈️</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        (async function protectDashboard() {
+            try {
+                const response = await fetch("/api/admin/session", {
+                    credentials: "same-origin"
+                });
+                if (!response.ok) {
+                    window.location.replace("/admin-login.html");
+                }
+            } catch (error) {
+                window.location.replace("/admin-login.html");
+            }
+        })();
+
+
+        async function loadRealDashboard(){try{const r=await fetch('/api/admin/dashboard-summary');if(!r.ok)return;const d=await r.json();document.getElementById('stat-users').textContent=d.users;document.getElementById('stat-transactions').textContent=d.transactions;document.getElementById('stat-pending').textContent=d.pendingTransactions;document.getElementById('stat-volume').textContent='TZS '+(Number(d.completedDepositsCents||0)/100).toLocaleString('en-TZ',{minimumFractionDigits:2,maximumFractionDigits:2});}catch(e){}}
+        loadRealDashboard();
+
+        async function adminLogout() {
+            try {
+                await fetch("/api/admin/logout", {
+                    method: "POST",
+                    credentials: "same-origin"
+                });
+            } finally {
+                window.location.replace("/admin-login.html");
+            }
+        }
+    </script>
+
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('/service-worker.js').catch(() => {})); }
+</script>
+</body>
+</html>
